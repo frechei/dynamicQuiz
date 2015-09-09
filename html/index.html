@@ -5,13 +5,17 @@
     <title></title>
     <link href="../css/quiz.css" rel="stylesheet" type="text/css">
     <script src="../scripts/jquery.js"></script>
+    <script src="../scripts/jquery.validate.js"></script>
     <script src="../scripts/main.js"></script>
 </head>
 <body>
-    <div class="context">
-        <h1>欢迎来到百万富翁</h1>
+<div class="context">
+    <h1>欢迎来到百万富翁</h1>
+    <form id="test">
         <div id="quiz"></div>
-        <button type="submit" >开始</button>
-    </div>
+        <button type="submit" id="before">上一题</button>
+        <button type="submit" id="next">开始</button>
+    </form>
+</div>
 </body>
 </html>
