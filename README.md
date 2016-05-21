@@ -1,4 +1,4 @@
-项目概览。   
+项目概览。  http://frechei.github.io/dynamicQuiz/html/index.html 
 
 这是根据[[译] 如何恰当地学习 JavaScript](https://github.com/colin4124/colin4124.github.io/blob/master/_source/content/2013-09-28-how-to-learn-javascript-properly.md)一文用来练手的项目。  
 
