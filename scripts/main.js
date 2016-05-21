@@ -27,7 +27,7 @@ $(document).ready(function(){
         }];
 
     //allQuestions第item项
-    var item = 0;
+    var item = $('p').data("item") || 0;
     //得分
     var grade = 0;
     //正确答案
@@ -35,83 +35,98 @@ $(document).ready(function(){
     //记录所有选项
     var chooseArr = [];
 
+    var $button = $('button');
+
+    var loadHtml = function(item) {
+        var html = "";
+        html += '<p data-item="'+ item + '">问题' + (item+1) + '：' + allQuestions[item].question + '</p>';
+        for (var i = 0; i < allQuestions[item].choices.length; i++) {
+            html += '<input type="radio" name="answer" value="' + i + '" ';
+            if (chooseArr[item] !== undefined && chooseArr[item] == i){
+                    html += 'checked="true"';
+                }
+            html += ' />'  + allQuestions[item].choices[i] + '<br>';
+        } 
+        return html;
+    };
+
+    var recordChoose = function(item) {
+        chooseArr[item] = $("input:checked").val();
+        console.log(chooseArr);
+        return chooseArr;
+    };
+
+    //开始button点击事件
+    $('button#begin').click(function(event) {
+        item = $('p').data("item") || 0;
+        event.preventDefault();
+        var $button_begin = $(this);
+
+        $button.hide();
+        $button_begin.siblings('#next').show();
+
+        $('#quiz').html(loadHtml(item));
+    });
+
     //下一题button点击事件
-    $('body').on('click','button#next',function(event){
+    $('button#next').click(function(event) {
         event.preventDefault();
-        var html = '';
-        //加分项放错位置，导致最后一个不能加分
-        var choose = $('input:radio[name="answer"]:checked').val();
+        var $button_next = $(this);
+        item = $('p').data("item") || 0;
+        
+        recordChoose(item);
 
-        //添加客户端的数据验证（client-side data validation）：
-        // 确保在进行到下个问题之前，用户回答了每个问题。
-        if (item >= 1){
-            if (choose == null){
-                $('form').next().empty();
-                $('<p>choose one answer</p>').insertAfter('form');
-                return false;
-            }
+        item += 1;
+
+
+        if (item == allQuestions.length-1) {
+            $button.hide();
+            $('button#total').show();
             $('button#before').show();
-        }
+        }else {
+            $button.hide();
+            $('.nb').show(); 
+        }      
 
-        //每点击一下，就动态地添加下个问题和从屏幕移除目前的问题
-        if(item < allQuestions.length){
-            //显示问题和选项
-            html += '<p>问题：' + allQuestions[item].question + '</p>';
-            for (var i = 0; i < allQuestions[item].choices.length; i++){
-                html += '<input type="radio" name="answer" value="' + i + '" ';
-                //捣腾这个记录历史，自己也是晕了
-                if (chooseArr[item+1] !== undefined && chooseArr[item+1] == i){
-                    html += 'checked="true"';
-                }
-                html += ' />'  + allQuestions[item].choices[i] + '<br>';
-            }
-
-            $(this).text('下一题');
-
-            //检测正确答案，留待下次click时使用
-            correct = allQuestions[item].correctAnswer;
-        }
-
-        //这里chooseArr从一开始才有数据
-        chooseArr[item] = choose;
-
-        //alert(choose);
-        alert(chooseArr);
-        item++;
-
-        if(item == allQuestions.length + 1){
-            for (var i=0; i < allQuestions.length; i++){
-                if(chooseArr[i+1] == allQuestions[i].correctAnswer){
-                    grade += 25;
-                }
-            }
-            html += '<p>最后得分：' + grade + '</p>';
-
-            $(this).hide();
-            $('button#before').hide();
-        }
-        $('#quiz').html(html);
+        $('#quiz').html(loadHtml(item));
+        
     });
 
-    $('body').on('click','button#before',function(event){
+    $('button#before').click(function(event) {
         event.preventDefault();
+        var $button_before = $(this);
+        item = $('p').data("item") || 0;
 
-        item--;
-        var choose = chooseArr[item];
-        if (item > 0){
-            var html = '<p>问题：' + allQuestions[item-1].question + '</p>';
-            for (var i = 0; i < allQuestions[item-1].choices.length; i++){
-                html += '<input type="radio" name="answer" value="' + i + '" ';
-                if (choose == i){
-                    html += 'checked="true"';
-                }
-                html += ' />'  + allQuestions[item-1].choices[i] + '<br>';
-            }
-            $('button#before').show();
-            $('button#next').text('下一题');
+        recordChoose(item);
+
+        item -= 1;
+        
+        if (item == 0) {
+            $button.hide();
+            $('button#next').show();
         }
-        $('#quiz').html(html);
-
+        else {
+            $button.hide();
+            $('button.nb').show();
+        }
+        
+        $('#quiz').html(loadHtml(item));
     });
 
+    $('button#total').click(function(event) {
+        event.preventDefault();
+        item = $('p').data("item") || 0;
+        $button.hide();
+
+        var answer = recordChoose(item);
+
+        for (var i = 0; i < answer.length; i++) {
+            if (answer[i] == allQuestions[i].correctAnswer) {
+                grade += 25;
+            }
+        }
+
+        var html = '总分：' + grade + '分！'
+        $('#quiz').html(html);
+    });
 });
