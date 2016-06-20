@@ -1,6 +1,6 @@
 项目概览。  http://frechei.github.io/dynamicQuiz/index.html 
 
-这是根据[[译] 如何恰当地学习 JavaScript](https://github.com/colin4124/colin4124.github.io/blob/master/_source/content/2013-09-28-how-to-learn-javascript-properly.md)一文，在看了[JavaScript高级程序设计(第3版) ](https://book.douban.com/subject/10546125/)以及[jQuery基础教程](https://book.douban.com/subject/25733582/)后，用来练手的项目。  
+这是根据[[译] 如何恰当地学习 JavaScript](https://github.com/colin4124/colin4124.github.io/blob/master/_source/content/2013-09-28-how-to-learn-javascript-properly.md)一文，在看了[《JavaScript高级程序设计(第3版)》 ](https://book.douban.com/subject/10546125/)以及[《jQuery基础教程》](https://book.douban.com/subject/25733582/)后，用来练手的项目。  
 
 
 - 这是一个简单的提问，有单选按钮的各种选项（radio button choices），在用户完成之后显示他/她的分数。（it will show the user her score upon completion.）
